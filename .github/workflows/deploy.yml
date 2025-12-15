@@ -20,7 +20,7 @@ jobs:
         run: |
           echo "Checking Docker setup..."
           docker --version
-          docker-compose --version
+          docker compose version
 
   build:
     needs: test
@@ -35,7 +35,7 @@ jobs:
       - name: Build Docker images
         run: |
           echo "Building Docker images..."
-          docker-compose config
+          docker compose config
           echo "Build validation passed"
 
   deploy-staging:
@@ -57,8 +57,8 @@ jobs:
           ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no ${{ secrets.DEPLOY_USER }}@${{ secrets.SERVER_IP_STAGING }} \
             "cd /root/final_exam_devops-soumaya-khady && \
              git pull origin main && \
-             docker-compose down || true && \
-             docker-compose up -d --build && \
+             docker compose down || true && \
+             docker compose up -d --build && \
              echo 'Staging deployment complete'"
       
       - name: Health check - Staging
@@ -86,8 +86,8 @@ jobs:
           ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no ${{ secrets.DEPLOY_USER }}@${{ secrets.SERVER_IP_PROD }} \
             "cd /root/final_exam_devops-soumaya-khady && \
              git pull origin main && \
-             docker-compose down || true && \
-             docker-compose up -d --build && \
+             docker compose down || true && \
+             docker compose up -d --build && \
              echo 'Production deployment complete'"
       
       - name: Health check - Production
